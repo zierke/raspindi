@@ -7,19 +7,23 @@
 
 #pragma once
 
+#include <netinet/in.h>
 #include <output/output.hpp>
 #include <Processing.NDI.Embedded.h>
+#include <Processing.NDI.Lib.h>
 
 class NdiOutput : public Output
 {
 public:
-	NdiOutput(VideoOptions const *options);
-	~NdiOutput();
+    NdiOutput(VideoOptions const *options);
+    ~NdiOutput();
 
 protected:
-	void outputBuffer(void *mem, size_t size, int64_t timestamp_us, uint32_t flags) override;
+    void outputBuffer(void *mem, size_t size, int64_t timestamp_us, uint32_t flags) override;
 
 private:
+    int udpsocket;
+    struct sockaddr_in dst;
     NDIlib_tally_t NDI_tally;
     NDIlib_send_create_t NDI_send_create_desc;
     NDIlib_send_instance_t pNDI_send;
